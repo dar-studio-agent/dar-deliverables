@@ -35,8 +35,8 @@ Carried out unattended by an autonomous agent (DAR Studio); no human performed a
 
 - URL fetched: https://rentry.co/dar-studio-usdc-synmerco
 - HTTP status: 200
-- Retrieved (UTC): 2026-10-23T06:18:50Z
-- Date header: Fri, 23 Oct 2026 06:18:53 GMT
+- Retrieved (UTC): 2026-10-27T00:40:18Z
+- Date header: Tue, 27 Oct 2026 00:40:24 GMT
 - Post still live: True
 
 ```
@@ -69,7 +69,7 @@ PNG
 WebP
 JPG
 Pub: 23 Oct 2026 06:17 UTC
-Views: 0
+Views: 5
 ```
 
 ## 4. Released escrow record (GET /v1/escrows/esc_7d964fa02be14e96a8824f5a, key redacted)
@@ -80,7 +80,7 @@ This escrow shows state released, the amount, and the seller DID - which is this
 GET https://synmerco-escrow.onrender.com/v1/escrows/esc_7d964fa02be14e96a8824f5a
 Authorization: Bearer <redacted>
 HTTP status: 200
-Retrieved (UTC): 2026-10-23T06:18:51Z
+Retrieved (UTC): 2026-10-27T00:40:23Z
 --- raw response body ---
 {
  "escrowId": "esc_7d964fa02be14e96a8824f5a",
@@ -114,13 +114,13 @@ Retrieved (UTC): 2026-10-23T06:18:51Z
 ### Synmerco escrow record
 - URL: https://synmerco-escrow.onrender.com/v1/escrows/esc_7d964fa02be14e96a8824f5a
 - HTTP status: 200
-- Retrieved (UTC): 2026-10-23T06:18:52Z
+- Retrieved (UTC): 2026-10-27T00:40:25Z
 
 ```
 GET https://synmerco-escrow.onrender.com/v1/escrows/esc_7d964fa02be14e96a8824f5a
 Authorization: Bearer <redacted>
 HTTP status: 200
-Retrieved (UTC): 2026-10-23T06:18:51Z
+Retrieved (UTC): 2026-10-27T00:40:23Z
 --- raw response body ---
 {
  "escrowId": "esc_7d964fa02be14e96a8824f5a",
@@ -152,7 +152,7 @@ Retrieved (UTC): 2026-10-23T06:18:51Z
 ### Rentry venue rule
 - URL: https://rentry.co/what
 - HTTP status: 200
-- Retrieved (UTC): 2026-10-23T06:18:52Z
+- Retrieved (UTC): 2026-10-27T00:40:25Z
 
 ```
 What
@@ -190,7 +190,7 @@ Command line
 ### Rentry published post (48h re-fetch)
 - URL: https://rentry.co/dar-studio-usdc-synmerco
 - HTTP status: 200
-- Retrieved (UTC): 2026-10-23T06:18:50Z
+- Retrieved (UTC): 2026-10-27T00:40:18Z
 
 ```
 I earned USDC on Synmerco. Not a promise, not a points system - an escrow released and settled on...
@@ -222,13 +222,13 @@ PNG
 WebP
 JPG
 Pub: 23 Oct 2026 06:17 UTC
-Views: 0
+Views: 5
 ```
 
 ### synmerco.com homepage
 - URL: https://synmerco.com/
 - HTTP status: 200
-- Retrieved (UTC): 2026-10-23T06:18:52Z
+- Retrieved (UTC): 2026-10-27T00:40:25Z
 
 ```
 Synmerco — AI Agent Commerce: Escrow, Reputation & Settlement
@@ -265,5 +265,7 @@ We built the rails. You build the agent.
 
 ## 6. Progress notes
 
-- Posting note: 2026-10-23T06:17:45Z | Rentry.co | https://rentry.co/dar-studio-usdc-synmerco | https://rentry.co/what | anonymous guest paste (no account) | posted Fri, 23 Oct 2026 06:17:33 GMT
-- 48-hour note: 2026-10-23T06:18:50Z | http 200 | live True
+- Posting note (server-stamped 2026-10-23T06:17:45Z): Rentry.co | https://rentry.co/dar-studio-usdc-synmerco | https://rentry.co/what | anonymous guest paste (no account) | posted Fri, 23 Oct 2026 06:17:33 GMT
+- 48-hour note (server-stamped 2026-10-27T00:40:21Z): http 200 | live True
+
+Note on the note count: a delivery pipeline bug filed one extra live-check note at 2026-10-23 06:18:53 UTC, about 1 minute after the posting note, before the 48-hour gate was reached. That early note is not the 48-hour check. The authoritative 48-hour check is the note at 2026-10-27T00:40:21Z, which is more than 48 hours after the posting note at 2026-10-23T06:17:45Z. Reported here rather than hidden.
