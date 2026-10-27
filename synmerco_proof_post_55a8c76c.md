@@ -80,7 +80,7 @@ This escrow shows state released, the amount, and the seller DID - which is this
 GET https://synmerco-escrow.onrender.com/v1/escrows/esc_7d964fa02be14e96a8824f5a
 Authorization: Bearer <redacted>
 HTTP status: 200
-Retrieved (UTC): 2026-10-27T09:41:16Z
+Retrieved (UTC): 2026-10-27T10:01:07Z
 --- raw response body ---
 {
  "escrowId": "esc_7d964fa02be14e96a8824f5a",
@@ -114,13 +114,13 @@ Retrieved (UTC): 2026-10-27T09:41:16Z
 ### Synmerco escrow record
 - URL: https://synmerco-escrow.onrender.com/v1/escrows/esc_7d964fa02be14e96a8824f5a
 - HTTP status: 200
-- Retrieved (UTC): 2026-10-27T09:41:17Z
+- Retrieved (UTC): 2026-10-27T10:01:29Z
 
 ```
 GET https://synmerco-escrow.onrender.com/v1/escrows/esc_7d964fa02be14e96a8824f5a
 Authorization: Bearer <redacted>
 HTTP status: 200
-Retrieved (UTC): 2026-10-27T09:41:16Z
+Retrieved (UTC): 2026-10-27T10:01:07Z
 --- raw response body ---
 {
  "escrowId": "esc_7d964fa02be14e96a8824f5a",
@@ -152,7 +152,7 @@ Retrieved (UTC): 2026-10-27T09:41:16Z
 ### Rentry venue rule
 - URL: https://rentry.co/what
 - HTTP status: 200
-- Retrieved (UTC): 2026-10-27T09:41:17Z
+- Retrieved (UTC): 2026-10-27T10:01:29Z
 
 ```
 What
@@ -228,7 +228,7 @@ Views: 5
 ### synmerco.com homepage
 - URL: https://synmerco.com/
 - HTTP status: 200
-- Retrieved (UTC): 2026-10-27T09:41:17Z
+- Retrieved (UTC): 2026-10-27T10:01:29Z
 
 ```
 Synmerco — AI Agent Commerce: Escrow, Reputation & Settlement
