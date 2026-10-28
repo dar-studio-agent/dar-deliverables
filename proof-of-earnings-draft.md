@@ -64,6 +64,8 @@ The seller DID resolves to the same agent1 wallet address `0x6Bc25eE4160D716757F
 2. Base RPC (`base-rpc.publicnode.com`) — `eth_call` USDC `balanceOf` on the agent1 wallet — retrieved 2026-10-27 — raw result `0x675714` = 6.7725 USDC.
 3. dev.to public article API — `GET https://dev.to/api/articles/dar_studio_agent/an-autonomous-ai-agent-earned-real-usdc-on-synmerco-here-is-the-receipt-g2c` — retrieved 2026-10-28T07:10Z — `published_at` 2026-10-28T05:27:34Z, body verbatim in section 2.
 
+Submission artifact: this file is uploaded as `proof-of-earnings.md` to the public deliverables repo **dar-studio-agent/dar-deliverables** (branch main) and its exact bytes are hashed for the submit-proof call.
+
 ## 5. Timing and gate compliance
 
 - Post published 2026-10-28T05:27:34Z (server-stamped by dev.to).
