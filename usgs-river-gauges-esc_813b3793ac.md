@@ -131,29 +131,59 @@ f0bec7174c8bfe4cc771d018b5ad3364c53f9cc6a5c71dbcdaeae3ffa06fe444 located-pull1.c
 
 ## PROOF — requests of both pulls
 
-### PULL 1 (first request UTC 2026-11-02T20:21:52Z)
+Time note (explains requestDT vs retrieval-time): "retrieved UTC" below is the client-side
+request START time. requestDT (IV JSON) and the "# retrieved:" comment (site rdb) are
+source-written times stamped inside the response documents by the USGS server when it
+finishes generating them — a few seconds after the request start (pull 2 IV Mississippi:
+request start 18:09:16Z, document written 18:09:20.227Z — a ~4 s generation time for a
+101 KB 11-site document; server clock included). Both are quoted raw below.
 
-- [IV/mississippi] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=05331000,05420500,05587450,07010000,07020500,07022000,07374000,07374525,05389500,05411500,05378500 — retrieved UTC 2026-11-02T20:21:52Z — 101662 bytes — SHA-256 7491a0f82034f79df6d4ce5ce1f29c388948051ca5c7d9ca0c8ac1f93d5796b4
-- [SITE/mississippi] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=05331000,05420500,05587450,07010000,07020500,07022000,07374000,07374525,05389500,05411500,05378500 — retrieved UTC 2026-11-02T20:21:54Z — 2456 bytes — SHA-256 dc649c5944865abb0f14861ce570882f2a3694fc2f1c824722148803ccd22d81
-- [IV/ohio] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=03255000,03294500,03303280,03322000,03381700,03277200,03292000,03292494,03293551,03303502,03304300 — retrieved UTC 2026-11-02T20:21:55Z — 114346 bytes — SHA-256 b9de27b0b44abc1adb6d7a0850c53aba5477cbb111122fea0f6dbc5b306617b3
-- [SITE/ohio] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=03255000,03294500,03303280,03322000,03381700,03277200,03292000,03292494,03293551,03303502,03304300 — retrieved UTC 2026-11-02T20:21:56Z — 2520 bytes — SHA-256 53a758c3456ad02bc26ea71a6d285b19d84d757bbadc4b564b0744642adbdbf4
-- [IV/missouri] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=06610000,06818000,06893000,06895500,06909000,06910450,06934500,06486000,06807000,06810070,06821250 — retrieved UTC 2026-11-02T20:21:57Z — 110833 bytes — SHA-256 6370fa35428de0842dc794e6ced86d6344633bb1361f834c6f64a99e0110a634
-- [SITE/missouri] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=06610000,06818000,06893000,06895500,06909000,06910450,06934500,06486000,06807000,06810070,06821250 — retrieved UTC 2026-11-02T20:21:59Z — 2458 bytes — SHA-256 fa24114976ae81075a719dc79c0dc11c6e912ebd3007ca279cc7826f4634bb61
+### PULL 1 (first request start UTC 2026-11-02T20:21:52Z)
 
-### PULL 2 (first request UTC 2026-11-03T18:09:16Z)
+- [IV/mississippi] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=05331000,05420500,05587450,07010000,07020500,07022000,07374000,07374525,05389500,05411500,05378500 — request start UTC 2026-11-02T20:21:52Z — 101662 bytes — SHA-256 7491a0f82034f79df6d4ce5ce1f29c388948051ca5c7d9ca0c8ac1f93d5796b4
+  RAW excerpt (exact text from the response): `"note":[{"title":"requestDT","value":"2026-11-02T20:21:56.837Z"}, ...`
+  Counts: timeSeries = 11, instant values = 1075.
+- [SITE/mississippi] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=05331000,05420500,05587450,07010000,07020500,07022000,07374000,07374525,05389500,05411500,05378500 — request start UTC 2026-11-02T20:21:54Z — 2456 bytes — SHA-256 dc649c5944865abb0f14861ce570882f2a3694fc2f1c824722148803ccd22d81
+  RAW excerpt (exact line from the response): `# retrieved: 2026-11-02 15:21:58 -05:00	(caas01)`
+  Counts: data rows = 11.
+- [IV/ohio] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=03255000,03294500,03303280,03322000,03381700,03277200,03292000,03292494,03293551,03303502,03304300 — request start UTC 2026-11-02T20:21:55Z — 114346 bytes — SHA-256 b9de27b0b44abc1adb6d7a0850c53aba5477cbb111122fea0f6dbc5b306617b3
+  RAW excerpt (exact text from the response): `"note":[{"title":"requestDT","value":"2026-11-02T20:21:59.236Z"}, ...`
+  Counts: timeSeries = 11, instant values = 1224.
+- [SITE/ohio] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=03255000,03294500,03303280,03322000,03381700,03277200,03292000,03292494,03293551,03303502,03304300 — request start UTC 2026-11-02T20:21:56Z — 2520 bytes — SHA-256 53a758c3456ad02bc26ea71a6d285b19d84d757bbadc4b564b0744642adbdbf4
+  RAW excerpt (exact line from the response): `# retrieved: 2026-11-02 15:22:00 -05:00	(caas01)`
+  Counts: data rows = 11.
+- [IV/missouri] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=06610000,06818000,06893000,06895500,06909000,06910450,06934500,06486000,06807000,06810070,06821250 — request start UTC 2026-11-02T20:21:57Z — 110833 bytes — SHA-256 6370fa35428de0842dc794e6ced86d6344633bb1361f834c6f64a99e0110a634
+  RAW excerpt (exact text from the response): `"note":[{"title":"requestDT","value":"2026-11-02T20:22:01.570Z"}, ...`
+  Counts: timeSeries = 11, instant values = 1189.
+- [SITE/missouri] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=06610000,06818000,06893000,06895500,06909000,06910450,06934500,06486000,06807000,06810070,06821250 — request start UTC 2026-11-02T20:21:59Z — 2458 bytes — SHA-256 fa24114976ae81075a719dc79c0dc11c6e912ebd3007ca279cc7826f4634bb61
+  RAW excerpt (exact line from the response): `# retrieved: 2026-11-02 15:22:03 -05:00	(caas01)`
+  Counts: data rows = 11.
 
-- [IV/mississippi] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=05331000,05420500,05587450,07010000,07020500,07022000,07374000,07374525,05389500,05411500,05378500 — retrieved UTC 2026-11-03T18:09:16Z — 101720 bytes — SHA-256 b2dd1a2b4a81924c5db20701a436567c9530ce46bba7476241b828356a9bed52
-- [SITE/mississippi] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=05331000,05420500,05587450,07010000,07020500,07022000,07374000,07374525,05389500,05411500,05378500 — retrieved UTC 2026-11-03T18:09:17Z — 2456 bytes — SHA-256 311c85e75e43203503886c6cf4c2a8100c873de8151ecfdbcc1159efb65c7ac3
-- [IV/ohio] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=03255000,03294500,03303280,03322000,03381700,03277200,03292000,03292494,03293551,03303502,03304300 — retrieved UTC 2026-11-03T18:09:18Z — 114906 bytes — SHA-256 6fe9bf5dd38c16d2f30997069ae7533429c31b99708c20409c33031423b5f1bf
-- [SITE/ohio] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=03255000,03294500,03303280,03322000,03381700,03277200,03292000,03292494,03293551,03303502,03304300 — retrieved UTC 2026-11-03T18:09:20Z — 2520 bytes — SHA-256 9282a6c08d18fa1ab041f99a608b3d632153ad4d8f95f1c5ea6df35f00f1b0b9
-- [IV/missouri] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=06610000,06818000,06893000,06895500,06909000,06910450,06934500,06486000,06807000,06810070,06821250 — retrieved UTC 2026-11-03T18:09:20Z — 111388 bytes — SHA-256 53142c3d6e7acdfd62fcb4031ad9c4f8505b94bf75f32f9c78a4f3be9f595905
-- [SITE/missouri] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=06610000,06818000,06893000,06895500,06909000,06910450,06934500,06486000,06807000,06810070,06821250 — retrieved UTC 2026-11-03T18:09:22Z — 2458 bytes — SHA-256 3b2a78cf79603621a5593c1f5142befe6bea5317ba2549419ff6a9490ada3c5a
+### PULL 2 (first request start UTC 2026-11-03T18:09:16Z)
 
-Source-written times (excerpts):
+- [IV/mississippi] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=05331000,05420500,05587450,07010000,07020500,07022000,07374000,07374525,05389500,05411500,05378500 — request start UTC 2026-11-03T18:09:16Z — 101720 bytes — SHA-256 b2dd1a2b4a81924c5db20701a436567c9530ce46bba7476241b828356a9bed52
+  RAW excerpt (exact text from the response): `"note":[{"title":"requestDT","value":"2026-11-03T18:09:20.227Z"}, ...`
+  Counts: timeSeries = 11, instant values = 1076.
+- [SITE/mississippi] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=05331000,05420500,05587450,07010000,07020500,07022000,07374000,07374525,05389500,05411500,05378500 — request start UTC 2026-11-03T18:09:17Z — 2456 bytes — SHA-256 311c85e75e43203503886c6cf4c2a8100c873de8151ecfdbcc1159efb65c7ac3
+  RAW excerpt (exact line from the response): `# retrieved: 2026-11-03 13:09:21 -05:00	(caas01)`
+  Counts: data rows = 11.
+- [IV/ohio] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=03255000,03294500,03303280,03322000,03381700,03277200,03292000,03292494,03293551,03303502,03304300 — request start UTC 2026-11-03T18:09:18Z — 114906 bytes — SHA-256 6fe9bf5dd38c16d2f30997069ae7533429c31b99708c20409c33031423b5f1bf
+  RAW excerpt (exact text from the response): `"note":[{"title":"requestDT","value":"2026-11-03T18:09:22.528Z"}, ...`
+  Counts: timeSeries = 11, instant values = 1231.
+- [SITE/ohio] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=03255000,03294500,03303280,03322000,03381700,03277200,03292000,03292494,03293551,03303502,03304300 — request start UTC 2026-11-03T18:09:20Z — 2520 bytes — SHA-256 9282a6c08d18fa1ab041f99a608b3d632153ad4d8f95f1c5ea6df35f00f1b0b9
+  RAW excerpt (exact line from the response): `# retrieved: 2026-11-03 13:09:23 -05:00	(caas01)`
+  Counts: data rows = 11.
+- [IV/missouri] https://waterservices.usgs.gov/nwis/iv/?format=json&parameterCd=00065&period=P1D&sites=06610000,06818000,06893000,06895500,06909000,06910450,06934500,06486000,06807000,06810070,06821250 — request start UTC 2026-11-03T18:09:20Z — 111388 bytes — SHA-256 53142c3d6e7acdfd62fcb4031ad9c4f8505b94bf75f32f9c78a4f3be9f595905
+  RAW excerpt (exact text from the response): `"note":[{"title":"requestDT","value":"2026-11-03T18:09:24.802Z"}, ...`
+  Counts: timeSeries = 11, instant values = 1196.
+- [SITE/missouri] https://waterservices.usgs.gov/nwis/site/?format=rdb&parameterCd=00065&hasDataTypeCd=iv&siteStatus=active&sites=06610000,06818000,06893000,06895500,06909000,06910450,06934500,06486000,06807000,06810070,06821250 — request start UTC 2026-11-03T18:09:22Z — 2458 bytes — SHA-256 3b2a78cf79603621a5593c1f5142befe6bea5317ba2549419ff6a9490ada3c5a
+  RAW excerpt (exact line from the response): `# retrieved: 2026-11-03 13:09:26 -05:00	(caas01)`
+  Counts: data rows = 11.
 
-- IV mississippi: requestDT = 2026-11-03T18:09:20.227Z (source-written) — first value 3.27 ft @ 2026-11-02T12:10:00.000-06:00
-- SITE mississippi rdb: `agency_cd	site_no	station_nm	site_tp_cd	dec_lat_va	dec_long_va	coord_acy_cd	dec_coord_datum_cd	alt_va	alt_acy_va	alt_dat | USGS	05331000	MISSISSIPPI RIVER AT ST. PAUL, MN	ST	44.9444444	-93.0881111	1	NAD83	 683.77	.01	NAVD88	07010206`
-- SITE ohio rdb: `agency_cd	site_no	station_nm	site_tp_cd	dec_lat_va	dec_long_va	coord_acy_cd	dec_coord_datum_cd	alt_va	alt_acy_va	alt_dat | USGS	03255000	OHIO RIVER AT CINCINNATI, OH	ST	39.0945044	-84.5104983	T	NAD83	 428.05	.05	NAVD88	05090203`
-- SITE missouri rdb: `agency_cd	site_no	station_nm	site_tp_cd	dec_lat_va	dec_long_va	coord_acy_cd	dec_coord_datum_cd	alt_va	alt_acy_va	alt_dat | USGS	06486000	Missouri River at Sioux City, IA	ST	42.48619444	-96.4130833	F	NAD83	 1057.42	.16	NAVD88	10230001`
+Source-written time comparison (first request of each pull, raw from the documents):
+
+- PULL 1 first request (IV Mississippi) requestDT = 2026-11-02T20:21:56.837Z
+- PULL 2 first request (IV Mississippi) requestDT = 2026-11-03T18:09:20.227Z
+- Pull 2's source-written time is later than pull 1's by 21.80 hours (requirement: >= 12 h).
 
 Public sources only; no contact with anyone.
