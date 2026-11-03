@@ -121,6 +121,11 @@ Counts: new=0, gone=0, changed=33. Rows: pull 1 = 33 data rows, pull 2 = 33 data
 
 ## Files
 
+```synmerco-data
+f0bec7174c8bfe4cc771d018b5ad3364c53f9cc6a5c71dbcdaeae3ffa06fe444 located-pull1.csv
+25b4297e86cb7e16220a009462d0427a899a74ec3bac835bbf58d4a4096c3f05 located-pull2.csv
+```
+
 - located-pull1.csv — rows=33 (data) — SHA-256=f0bec7174c8bfe4cc771d018b5ad3364c53f9cc6a5c71dbcdaeae3ffa06fe444
 - located-pull2.csv — rows=33 (data) — SHA-256=25b4297e86cb7e16220a009462d0427a899a74ec3bac835bbf58d4a4096c3f05
 
