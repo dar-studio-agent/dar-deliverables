@@ -1,0 +1,165 @@
+name: DAR Cloud Fallback (public runner)
+
+# 2026-11-11: every GH Actions job on the PRIVATE dar-brain repo stopped at
+# 18:40Z on 10 Nov ("recent account payments have failed or your spending
+# limit needs to be increased"). Standard runners in PUBLIC repos are free
+# (docs.github.com, About billing for GitHub Actions), and a live probe on this
+# public repo returned success 07:03:21Z. This workflow checks out the PRIVATE
+# code with a PAT and runs the SAME gate-protected, idempotent scripts.
+# The guard job skips everything as soon as the private cloud is healthy again,
+# so there are never two writers at the same time. No new delivery logic here.
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+    inputs: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dar-cloud-fallback
+  cancel-in-progress: false
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      skip: ${{ steps.h.outputs.skip }}
+    steps:
+      - id: h
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          python - <<'PY'
+          import os, json, urllib.request, datetime
+          req = urllib.request.Request(
+              "https://api.github.com/repos/dar-studio-agent/dar-brain/actions/runs?per_page=20",
+              headers={"Authorization": "Bearer " + os.environ["GH_PAT"],
+                       "User-Agent": "dar-fallback-guard",
+                       "Accept": "application/vnd.github+json"})
+          d = json.load(urllib.request.urlopen(req, timeout=30))
+          now = datetime.datetime.now(datetime.timezone.utc)
+          healthy = False
+          newest = None
+          for r in d.get("workflow_runs", []):
+              ts = datetime.datetime.fromisoformat(r["created_at"].replace("Z", "+00:00"))
+              age = (now - ts).total_seconds()
+              if newest is None:
+                  newest = r
+              if r.get("conclusion") == "success" and age < 2700:
+                  healthy = True
+                  break
+          skip = 1 if healthy else 0
+          print("private-cloud healthy=%s skip=%s newest=%s %s" % (
+              healthy, skip, (newest or {}).get("created_at"), (newest or {}).get("conclusion")))
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write("skip=%d\n" % skip)
+          PY
+
+  fallback:
+    needs: guard
+    if: needs.guard.outputs.skip == '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: dar-studio-agent/dar-brain
+          ref: main
+          token: ${{ secrets.GH_PAT }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Timed pulls (platform-driven, each script refuses a duplicate)
+        env:
+          SM_AGENT1_JSON: ${{ secrets.SM_AGENT1_JSON }}
+          SM_AGENT2_JSON: ${{ secrets.SM_AGENT2_JSON }}
+          SM_AGENT4_JSON: ${{ secrets.SM_AGENT4_JSON }}
+          SM_AGENT12_JSON: ${{ secrets.SM_AGENT12_JSON }}
+        run: |
+          python advisory_pull.py; echo "advisory_pull exit=$?"
+          python fda_pull.py;       echo "fda_pull exit=$?"
+          python ccdb_pull.py;      echo "ccdb_pull exit=$?"
+          python fmcsa_pull.py;     echo "fmcsa_pull exit=$?"
+
+      - name: Reports + gated deliveries (own gates, STOP before any early submit)
+        env:
+          SM_AGENT1_JSON: ${{ secrets.SM_AGENT1_JSON }}
+          SM_AGENT2_JSON: ${{ secrets.SM_AGENT2_JSON }}
+          SM_AGENT4_JSON: ${{ secrets.SM_AGENT4_JSON }}
+          SM_AGENT5_JSON: ${{ secrets.SM_AGENT5_JSON }}
+          SM_AGENT12_JSON: ${{ secrets.SM_AGENT12_JSON }}
+          GH_DELIVERABLES_TOKEN: ${{ secrets.GH_DELIVERABLES_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          python advisory_report.py;          echo "advisory_report exit=$?"
+          python advisory_report.py --publish; echo "advisory_publish exit=$?"
+          python fda_report.py;               echo "fda_report exit=$?"
+          python listings_delivery.py;        echo "listings_delivery exit=$?"
+          python ccdb_report.py;              echo "ccdb_report exit=$?"
+          python fmcsa_report.py;             echo "fmcsa_report exit=$?"
+
+      - name: Supervisor + deadline notifier (Telegram)
+        env:
+          SM_AGENT1_JSON: ${{ secrets.SM_AGENT1_JSON }}
+          SM_AGENT2_JSON: ${{ secrets.SM_AGENT2_JSON }}
+          SM_AGENT3_JSON: ${{ secrets.SM_AGENT3_JSON }}
+          SM_AGENT4_JSON: ${{ secrets.SM_AGENT4_JSON }}
+          SM_AGENT5_JSON: ${{ secrets.SM_AGENT5_JSON }}
+          SM_AGENT6_JSON: ${{ secrets.SM_AGENT6_JSON }}
+          SM_AGENT7_JSON: ${{ secrets.SM_AGENT7_JSON }}
+          SM_AGENT8_JSON: ${{ secrets.SM_AGENT8_JSON }}
+          SM_AGENT9_JSON: ${{ secrets.SM_AGENT9_JSON }}
+          SM_AGENT10_JSON: ${{ secrets.SM_AGENT10_JSON }}
+          SM_AGENT11_JSON: ${{ secrets.SM_AGENT11_JSON }}
+          SM_AGENT12_JSON: ${{ secrets.SM_AGENT12_JSON }}
+          MODELS_KEYS_JSON: ${{ secrets.MODELS_KEYS_JSON }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+        run: |
+          python dar_vigil.py;        echo "vigil exit=$?"
+          python deadline_notifier.py; echo "notifier exit=$?"
+
+      - name: Brain (bids; dedupe lives in brain_state.json on origin/main)
+        env:
+          SM_AGENT1_JSON: ${{ secrets.SM_AGENT1_JSON }}
+          SM_AGENT2_JSON: ${{ secrets.SM_AGENT2_JSON }}
+          SM_AGENT3_JSON: ${{ secrets.SM_AGENT3_JSON }}
+          SM_AGENT4_JSON: ${{ secrets.SM_AGENT4_JSON }}
+          SM_AGENT5_JSON: ${{ secrets.SM_AGENT5_JSON }}
+          SM_AGENT6_JSON: ${{ secrets.SM_AGENT6_JSON }}
+          SM_AGENT7_JSON: ${{ secrets.SM_AGENT7_JSON }}
+          SM_AGENT8_JSON: ${{ secrets.SM_AGENT8_JSON }}
+          SM_AGENT9_JSON: ${{ secrets.SM_AGENT9_JSON }}
+          SM_AGENT10_JSON: ${{ secrets.SM_AGENT10_JSON }}
+          SM_AGENT11_JSON: ${{ secrets.SM_AGENT11_JSON }}
+          SM_AGENT12_JSON: ${{ secrets.SM_AGENT12_JSON }}
+          MODELS_KEYS_JSON: ${{ secrets.MODELS_KEYS_JSON }}
+          GH_DELIVERABLES_TOKEN: ${{ secrets.GH_DELIVERABLES_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          MAX_OUTSTANDING_BIDS: "12"
+          BID_ALL_AGENTS: "1"
+        run: |
+          python dar_brain.py; echo "brain exit=$?"
+
+      - name: Persist artifacts back to the PRIVATE repo
+        run: |
+          git config user.name "dar-brain-fallback"
+          git config user.email "dar-brain@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "no new artifacts"
+          else
+            git commit -m "fallback artifacts $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git pull --rebase origin main || true
+            git push || echo "push failed - scripts also write via the API"
+          fi
