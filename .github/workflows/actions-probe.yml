@@ -1,0 +1,8 @@
+name: DAR Actions Billing Probe
+on:
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "public repo actions alive $(date -u +%Y-%m-%dT%H:%M:%SZ)"
