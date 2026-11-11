@@ -140,7 +140,7 @@ jobs:
         run: |
           if [ "${{ steps.pre.outputs.advisory }}" = "1" ]; then python advisory_report.py --publish; echo "advisory_publish exit=$?"; fi
           if [ "${{ steps.pre.outputs.fda }}" = "1" ]; then python fda_report.py; echo "fda_report exit=$?"; fi
-          if [ "${{ steps.pre.outputs.listings }}" = "1" ]; then python listings_delivery.py; echo "listings_delivery exit=$?"; fi
+          if [ "${{ steps.pre.outputs.listings }}" = "1" ]; then python listings_delivery.py --publish; echo "listings_delivery exit=$?"; fi
           if [ "${{ steps.pre.outputs.ccdb }}" = "1" ]; then python ccdb_report.py --publish; echo "ccdb_publish exit=$?"; fi
           if [ "${{ steps.pre.outputs.fmcsa }}" = "1" ]; then python fmcsa_report.py --publish; echo "fmcsa_publish exit=$?"; fi
 
